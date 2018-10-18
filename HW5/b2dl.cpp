@@ -1,8 +1,8 @@
-/* 
+/*
 
 
 
-
+// asdf
 
 
 
@@ -267,17 +267,18 @@ void a100()
 {
 	cout << "Here's a100.\n";
 
+	cout << "Repugnis turns a paler shade of green, and gulps. \"I beg you, Mr Artanon, stay\n";
+	cout << "your hand. I’m sure that something must be ready.\" The cook glances around and\n";
+	cout << "spots a bench at which several trays are being assembled. \"Ah!\" he says. \"How\n";
+	cout << "about some pickled rat heads and carpaccio of slug?" You scowl, long enough to\n";
+	cout << "\n";
+	cout << "\n";
+	cout << "\n";
+	cout << "\n";
+	cout << "\n";
+
 	A100
-Repugnis turns a paler shade of green, and gulps. "I beg you, Mr
-Artanon, stay your hand. I’m sure that something must be ready."
-The cook glances around and spots a bench at which several trays are
-being assembled. "Ah!" he says. "How about some pickled rat heads
-and carpaccio of slug?" You scowl, long enough to make Repugnis
-quiver, then turn and snap at some lurking footmen. "Get those trays
-up to his lordship without delay!" The footmen spring into action,
-4butler to the dark lord (b2dl)
-seizing the trays and heading for the door. "Thank you, sir," says
-Repugnis. "The roast will not be far behind, I promise." "See that it
+   make Repugnis quiver, then turn and snap at some lurking footmen. "Get those trays up to his lordship without delay!" The footmen spring into action, seizing the trays and heading for the door. "Thank you, sir," says Repugnis. "The roast will not be far behind, I promise." "See that it
 isn’t," you reply, "or the next item on the menu might be goblin stew."
 It seems you are an INTIMIDATOR.
 1. Onwards, Mr Artanon. (turn to A232)
