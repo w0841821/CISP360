@@ -7,38 +7,26 @@
 using namespace std;
 
 // prototypes
-//string pickObject(string nameObject);
-void a1(int&);
-void a13(int&);
-void a100(int&);
-void a159(int&);
-void a161(int&);
-void a167(int&);
-void a173(int&);
-void a212(int&);
-void a232(int&);
-void a290(int&);
+void a1();
+void a13();
+void a100();
+void a159();
+void a161();
+void a167();
+void a173();
+void a212();
+void a232();
+void a290();
 
 int main()
 {
-  int menuValue;
-
-  a1(menuValue);
-
+  a1();
   return 0;
 }
 
-/*
-void getMenuChoice(int& menuChoice)
+void a1()
 {
-  cout << "Which path is yours?\n";
-  cin >> menuChoice;
-}
-*/
-
-void a1(int& menuChoice)
-{
-  int menuValue;
+  int choiceA1;
 
   cout << "\nHere is A1.\n\n";
 
@@ -46,31 +34,19 @@ void a1(int& menuChoice)
   cout << "2. Call A167\n";
 
   do {
-    cout << "Which path is yours?\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1 && menuChoice != 2);
+    cout << "\nWhich path is yours?\n";
+    cin >> choiceA1;
+  } while(choiceA1 != 1 && choiceA1 != 2);
 
-  if (menuChoice == 1)
-    a100(menuValue);
+  if (choiceA1 == 1)
+    a100();
   else
-    a167(menuValue);
-
-  // getMenuChoice(menuChoice);
-/*
-  cin >> menuChoice
-
-
-  else
-  {
-    cout << "That's not a valid option. Try again.\n";
-    cout << "Which path would you like to take?\n";
-  }
-  */
+    a167();
 }
 
-void a13(int& menuChoice)
+void a13()
 {
-  int menuValue;
+  int choiceA13;
 
   cout << "\nHere is A13.\n\n";
 
@@ -80,134 +56,146 @@ void a13(int& menuChoice)
 
   do {
     cout << "Which path is yours?\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1 && menuChoice != 2 && menuChoice != 3);
+    cin >> choiceA13;
+  } while(choiceA13 != 1 && choiceA13 != 2 && choiceA13 != 3);
 
-  if (menuChoice == 1)
-    a212(menuValue);
-  else if (menuChoice == 2)
-    a159(menuValue);
+  if (choiceA13 == 1)
+    a212();
+  else if (choiceA13 == 2)
+    a159();
   else
-    a173(menuValue);
+    a173();
 }
 
-void a100(int& menuChoice)
+void a100()
 {
-  int menuValue;
+  int choiceA100;
 
-  cout << "Here is A100.\n\n";
+  cout << "\nHere is A100.\n\n";
 
   cout << "1. Continue to A232\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA100;
+  } while(choiceA100 != 1);
 
-  a232(menuValue);
+  a232();
 }
 
-void a159(int& menuChoice)
+void a159()
 {
+  int choiceA159;
+
   cout << "Here is A159.\n\n";
 
   cout << "1. Done.\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA159;
+  } while(choiceA159 != 1);
+
+  cout << "\nThe end.";
 }
 
-void a161(int& menuChoice)
+void a161()
 {
+  int choiceA161;
+
   cout << "Here is A161.\n\n";
 
   cout << "1. Done.\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA161;
+  } while(choiceA161 != 1);
+
+  cout << "\nThe end.";
 }
 
-void a167(int& menuChoice)
+void a167()
 {
-  int menuValue;
+  int choiceA167;
 
-  cout << "Here is A167.\n\n";
+  cout << "\nHere is A167.\n\n";
 
   cout << "1. Continue to A232\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA167;
+  } while(choiceA167 != 1);
 
-  a232(menuValue);
+  a232();
 }
 
-void a173(int& menuChoice)
+void a173()
 {
+  int choiceA173;
+
   cout << "Here is A173.\n\n";
 
   cout << "1. Done.\n";
   cout << "2. Done.\n";
 
   do {
-    cout << "Which path is yours?\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1 && menuChoice != 2);
+    cout << "\nWhich path is yours?\n";
+    cin >> choiceA173;
+  } while(choiceA173 != 1 && choiceA173 != 2);
+
+  cout << "\nThe end.";
 }
 
-void a212(int& menuChoice)
+void a212()
 {
-  int menuValue;
+  int choiceA212;
 
   cout << "Here is A212.\n\n";
 
   cout << "1. Call A161.\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA212;
+  } while(choiceA212 != 1);
 
-  a161(menuValue);
+  a161();
 }
 
-void a232(int& menuChoice)
+void a232()
 {
-  int menuValue;
+  int choiceA232;
 
-  cout << "Here is A232.\n\n";
+  cout << "\nHere is A232.\n\n";
 
   cout << "1. Call A13.\n";
   cout << "2. Call A290.\n";
 
   do {
-    cout << "Which path is yours?\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1 && menuChoice != 2);
+    cout << "\nWhich path is yours?\n";
+    cin >> choiceA232;
+  } while(choiceA232 != 1 && choiceA232 != 2);
 
-  if (menuChoice == 1)
-    a13(menuValue);
+  if (choiceA232 == 1)
+    a13();
   else
-    a290(menuValue);
+    a290();
 }
 
-void a290(int& menuChoice)
+void a290()
 {
-  int menuValue;
+  int choiceA290;
 
   cout << "Here is A290.\n\n";
 
   cout << "1. Call A161.\n";
 
   do {
-    cout << "Only one path lies ahead.\n";
-    cin >> menuChoice;
-  } while(menuChoice != 1);
+    cout << "\nOnly one path lies ahead.\n";
+    cin >> choiceA290;
+  } while(choiceA290 != 1);
 
-  a161(menuValue);
+  a161();
 }
