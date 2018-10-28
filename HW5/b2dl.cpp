@@ -1,5 +1,6 @@
-// g++ -std=c++14 -g -Wall b2dl.cpp
-
+// b2dl.cpp
+// Erroll Abrahamian, CISP 360
+// 10-28-2018
 
 #include <iostream>
 #include <string>
