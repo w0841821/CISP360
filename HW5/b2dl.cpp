@@ -1,12 +1,18 @@
 // b2dl.cpp
 // Erroll Abrahamian, CISP 360
 // 10-28-2018
+// Specification B1 - Booleans
+// Specification B2 - Path
+//Specification B4 - Valid choices only
+
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
-// declare prototypes
+// Specification B5 – Function Prototype
+// Specification A2 - No Globals
 void sayHi();
 string generalMenu();
 string raiseItAll(string menuSelection);
@@ -30,6 +36,8 @@ void a173();
 void a212();
 void a232();
 void a290();
+void printBooleans();
+void printPath();
 
 // start the book!
 int main()
@@ -44,6 +52,11 @@ int main()
 
     cout << "The end!\n\n";
 
+    printBooleans();
+
+    printPath();
+
+    // Specification A3 - Game loop
     cout << "Would you like to play again?\n";
     cout << "Enter N to quit, or any other letter to continue.\n";
     cin >> startOver;
@@ -58,11 +71,12 @@ void sayHi()
   cout << "Welcome to Butler to the Dark Lord, a text adventure!\n\n";
 }
 
+// Specification B3 - General Menu
 string generalMenu()
 {
   string menuSelection;
   cout << "Which path is yours?\n";
-  cout << "Enter your choice by number or first word.\n";
+  cout << "Enter your choice by first word.\n";
   cin >> menuSelection;
   cout << "\n";
   return menuSelection;
@@ -75,86 +89,152 @@ string raiseItAll(string menuSelection)
 	return menuSelection;
 }
 
+// Specification A1 - Input Validation
 bool checkA1(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt");
+  pathFile << "A1" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "2" || checkIt == "IT'S" || checkIt == "SURELY")
+  if (checkIt == "IT'S" || checkIt == "SURELY")
     acceptSelection = true;
   return acceptSelection;
 }
 
 bool checkA13(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A13" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "2" || checkIt == "3" || checkIt == "ARE" || checkIt == "IF" || checkIt == "OR")
+  if (checkIt == "ARE" || checkIt == "IF" || checkIt == "OR")
     acceptSelection = true;
   return acceptSelection;
 }
 
 bool checkA100(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A100" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "ONWARDS")
+  if (checkIt == "ONWARDS")
+  {
+    ofstream booleanFile;
+    booleanFile.open("booleans.txt");
+    booleanFile << "INTIMIDATOR" << endl;
+    booleanFile.close();
     acceptSelection = true;
+  }
   return acceptSelection;
 }
 
 bool checkA159(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A159" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "DONE")
+  if (checkIt == "DONE")
     acceptSelection = true;
   return acceptSelection;
 }
 
 bool checkA161(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A161" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "DONE")
+  if (checkIt == "DONE")
+  {
+    ofstream booleanFile;
+    booleanFile.open("booleans.txt", ios::app);
+    booleanFile << "CHAIR IS DIRTY" << endl;
+    booleanFile.close();
     acceptSelection = true;
+  }
   return acceptSelection;
 }
 
 bool checkA167(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A167" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "ONWARDS")
+  if (checkIt == "ONWARDS")
+  {
+    ofstream booleanFile;
+    booleanFile.open("booleans.txt");
+    booleanFile << "DIPLOMAT" << endl;
+    booleanFile.close();
     acceptSelection = true;
+  }
   return acceptSelection;
 }
 
 bool checkA173(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A173" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "2" || checkIt == "DO" || checkIt == "OR")
+  if (checkIt == "DO" || checkIt == "OR")
     acceptSelection = true;
   return acceptSelection;
 }
 
 bool checkA212(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A212" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "NICELY")
+  if (checkIt == "NICELY")
+  {
+    ofstream booleanFile;
+    booleanFile.open("booleans.txt", ios::app);
+    booleanFile << "HAIKEN IS GRATEFUL" << endl;
+    booleanFile.close();
     acceptSelection = true;
+  }
   return acceptSelection;
 }
 
 bool checkA232(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A232" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "2" || checkIt == "THE" || checkIt == "OR")
+  if (checkIt == "THE" || checkIt == "OR")
     acceptSelection = true;
   return acceptSelection;
 }
 
 bool checkA290(string &checkIt)
 {
+  ofstream pathFile;
+  pathFile.open("path.txt", ios::app);
+  pathFile << "A290" << endl;
+  pathFile.close();
   bool acceptSelection;
-  if (checkIt == "1" || checkIt == "EXCELLENT")
+  if (checkIt == "EXCELLENT")
     acceptSelection = true;
   return acceptSelection;
 }
 
+// Specification C1 - Individual Functions
 void a1()
 {
   bool acceptSelection;
@@ -194,7 +274,8 @@ void a1()
     acceptSelection = checkA1(menuSelection);
   } while (!acceptSelection);
 
-  if (menuSelection == "1" || menuSelection == "IT'S")
+  // Specification C2 - Simple menu
+  if (menuSelection == "IT'S")
     a100();
   else
     a167();
@@ -204,6 +285,7 @@ void a13()
 {
   bool acceptSelection;
   string menuSelection;
+  bool diplomat;
 
   cout << "  Feeling dangerous, Mr Artanon? You move past Mal to Captain\n";
   cout << "Haiken and, using a pair of tongs fashioned to look like crow’s claws,\n";
@@ -216,6 +298,12 @@ void a13()
   cout << "skimming the tableware. You realize he is uncertain about what,\n";
   cout << "amongst the array of cutlery laid out on either side of his plate, is the\n";
   cout << "correct implement to use for rat heads.\n\n";
+
+  diplomat = checkDiplomat(diplomat);
+  if ((diplomat = true))
+  {
+    cout << "DIPLOMAT IS TRUE\n\n";
+  }
 
   cout << "1. Are you a DIPLOMAT? (turn to A212)\n\n";
 
@@ -230,9 +318,9 @@ void a13()
     acceptSelection = checkA13(menuSelection);
   } while (!acceptSelection);
 
-  if (menuSelection == "1" || menuSelection == "ARE")
+  if (menuSelection == "ARE")
     a212();
-  else if (menuSelection == "2" || menuSelection == "IF")
+  else if (menuSelection == "IF")
     a159();
   else
     a173();
@@ -346,6 +434,9 @@ void a167()
     acceptSelection = checkA167(menuSelection);
   } while (!acceptSelection);
 
+  bool diplomat;
+  if (menuSelection == "ONWARDS")
+    diplomat = true;
   a232();
 }
 
@@ -455,7 +546,7 @@ void a232()
     acceptSelection = checkA232(menuSelection);
   } while (!acceptSelection);
 
-  if (menuSelection == "1" || menuSelection == "THE")
+  if (menuSelection == "THE")
     a13();
   else
     a290();
@@ -491,4 +582,30 @@ void a290()
   } while (!acceptSelection);
 
   a161();
+}
+
+void printBooleans()
+{
+  ifstream booleanFile;
+  booleanFile.open("booleans.txt");
+  string line;
+  cout << "The booleans tracked were:\n";
+  while (getline(booleanFile, line))
+  {
+    cout << line << endl;
+  }
+  cout << "\n";
+}
+
+void printPath()
+{
+  ifstream pathFile;
+  pathFile.open("path.txt");
+  string line;
+  cout << "The path taken was:\n";
+  while (getline(pathFile, line))
+  {
+    cout << line << "-->";
+  }
+  cout << "The end!\n\n";
 }
