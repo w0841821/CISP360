@@ -617,7 +617,7 @@ void printPath()
   cout << "The path taken was:\n";
   while (getline(pathFile, line))
   {
-    cout << line << "-->";
+    cout << line << " --> ";
   }
   cout << "The end!\n\n";
 }
