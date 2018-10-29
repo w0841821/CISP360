@@ -1,10 +1,6 @@
 // b2dl.cpp
 // Erroll Abrahamian, CISP 360
 // 10-28-2018
-// Specification B1 - Booleans
-// Specification B2 - Path
-//Specification B4 - Valid choices only
-
 
 #include <iostream>
 #include <string>
@@ -48,6 +44,11 @@ int main()
   sayHi();
 
   do {
+    ofstream diploFile;
+    diploFile.open("diplomat.txt");
+    diploFile << "" << endl;
+    diploFile.close();
+
     a1();
 
     cout << "The end!\n\n";
@@ -68,7 +69,7 @@ int main()
 
 void sayHi()
 {
-  cout << "Welcome to Butler to the Dark Lord, a text adventure!\n\n";
+  cout << "\nWelcome to Butler to the Dark Lord, a text adventure!\n\n";
 }
 
 // Specification B3 - General Menu
@@ -263,10 +264,12 @@ void a1()
   cout << "could aim for a rare cut?\"\n\n";
 
   cout << "1. \"It’s you who’ll get a rare cut across that corpulent neck of yours\n";
-  cout << "if you don’t speed things along, you feckless blob of festering lard.\"\n\n";
+  cout << "if you don’t speed things along, you feckless blob of festering lard.\"\n";
+  cout << "(turn to A100)\n\n";
 
   cout << "2. \"Surely in such an industrious kitchen, there must be a starter or\n";
-  cout << "two ready to send along and sate His Abhorentness’s appetite?\"\n\n";
+  cout << "two ready to send along and sate His Abhorentness’s appetite?\" (turn\n";
+  cout << "to A167)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -285,7 +288,6 @@ void a13()
 {
   bool acceptSelection;
   string menuSelection;
-  bool diplomat;
 
   cout << "  Feeling dangerous, Mr Artanon? You move past Mal to Captain\n";
   cout << "Haiken and, using a pair of tongs fashioned to look like crow’s claws,\n";
@@ -299,18 +301,23 @@ void a13()
   cout << "amongst the array of cutlery laid out on either side of his plate, is the\n";
   cout << "correct implement to use for rat heads.\n\n";
 
-  diplomat = checkDiplomat(diplomat);
-  if ((diplomat = true))
+  ifstream diploFile;
+  diploFile.open("diplomat.txt");
+  string line;
+  while (getline(diploFile, line))
   {
-    cout << "DIPLOMAT IS TRUE\n\n";
+    if (line == "DIPLOMAT")
+    {
+      cout << "1. Are you a DIPLOMAT? (turn to A212)\n\n";
+    }
+    else
+    {
+      cout << "2. If not, do you simply inform him which is the proper rat-head-\n";
+      cout << "eating-fork? (turn to A159)\n\n";
+
+      cout << "3. Or do you let him flounder? (turn to A173)\n\n";
+    }
   }
-
-  cout << "1. Are you a DIPLOMAT? (turn to A212)\n\n";
-
-  cout << "2. If not, do you simply inform him which is the proper rat-head-\n";
-  cout << "eating-fork? (turn to A159)\n\n";
-
-  cout << "3. Or do you let him flounder? (turn to A173)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -343,7 +350,7 @@ void a100()
   cout << "isn’t,\" you reply, \"or the next item on the menu might be goblin stew.\"\n";
   cout << "It seems you are an INTIMIDATOR.\n\n";
 
-  cout << "1. Onwards, Mr Artanon.\n\n";
+  cout << "1. Onwards, Mr Artanon. (turn to A232)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -414,6 +421,7 @@ void a167()
 {
   bool acceptSelection;
   string menuSelection;
+  //bool diplomat;
 
   cout << "  Repugnis nods eagerly, which ripples his many chins. \"Yes sir,\n";
   cout << "of course! Let me see now...\" He glances around and spots a bench\n";
@@ -426,7 +434,7 @@ void a167()
   cout << "leap to action, seizing the platters and heading for the door. It seems\n";
   cout << "you are a DIPLOMAT.\n\n";
 
-  cout << "1. Onwards, Mr Artanon.\n\n";
+  cout << "1. Onwards, Mr Artanon. (turn to A232)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -434,9 +442,10 @@ void a167()
     acceptSelection = checkA167(menuSelection);
   } while (!acceptSelection);
 
-  bool diplomat;
-  if (menuSelection == "ONWARDS")
-    diplomat = true;
+  ofstream diploFile;
+  diploFile.open("diplomat.txt");
+  diploFile << "DIPLOMAT" << endl;
+  diploFile.close();
   a232();
 }
 
@@ -475,9 +484,9 @@ void a173()
   cout << "issue), to lose a competent messenger to a moment of ill temper over\n";
   cout << "something that really isn’t his fault.\n\n";
 
-  cout << "1. Do you attempt to intercede on Peedy’s behalf?\n\n";
+  cout << "1. Do you attempt to intercede on Peedy’s behalf? (Done)\n\n";
 
-  cout << "2. Or abandon him to his miserable fate?\n\n";
+  cout << "2. Or abandon him to his miserable fate? (Done)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -573,7 +582,7 @@ void a290()
   cout << "one to his mouth. With your lords served, you move back from the\n";
   cout << "table to remain in waiting.\n\n";
 
-  cout << "1. Excellent posture, Mr Artanon.\n\n";
+  cout << "1. Excellent posture, Mr Artanon. (turn to A161)\n\n";
 
   do {
     menuSelection = generalMenu();
@@ -584,6 +593,8 @@ void a290()
   a161();
 }
 
+// Specification B1 - Booleans
+// Specification A4 - using files to save booleans and paths
 void printBooleans()
 {
   ifstream booleanFile;
@@ -597,6 +608,7 @@ void printBooleans()
   cout << "\n";
 }
 
+// Specification B2 - Path
 void printPath()
 {
   ifstream pathFile;
