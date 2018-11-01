@@ -21,10 +21,13 @@ void startMenu();
 void instructions();
 bool coinFlip();
 void board();
+char playerMove(char*);
+char compMove(char*);
 //void checkGameOver();
 
 int main()
 {
+  srand(time(0));
   startMenu();
   return 0;
 }
@@ -88,9 +91,9 @@ bool coinFlip()
 
 void board()
 {
-  char playAgain;
+//  char playAgain;
   char boardSymbol;
-  do {
+//  do {
     bool userFirst = coinFlip();
     if (userFirst)
     {
@@ -113,8 +116,30 @@ void board()
         cout << "-----------------";
     }
 
-    // enter logic if computer goes first
+    if (userFirst)
+    {
+      playerMove(square);
+      for (int i = 0; i < 9; i=i+3)
+      {
+        cout << "\n";
+        cout << "  " << square[i] << "  |  " << square[i+1] << "  |  " << square[i+2] << "\n";
+        if (i < 6)
+          cout << "-----------------";
+      }
+    }
+    else
+    {
+      compMove(square);
+      for (int i = 0; i < 9; i=i+3)
+      {
+        cout << "\n";
+        cout << "  " << square[i] << "  |  " << square[i+1] << "  |  " << square[i+2] << "\n";
+        if (i < 6)
+          cout << "-----------------";
+      }
+    }
 
+/*
     int playerPick;
     //do {
 
@@ -142,11 +167,58 @@ void board()
         cout << "\nOops, that wasn't an option. Try again.\n\n";
     } while(toupper(playAgain) != 'Y' && toupper(playAgain) != 'N');
 
+
+*/
+
   //checkGameOver();
 
-  } while (toupper(playAgain) != 'N');
+//  } while (toupper(playAgain) != 'N');
 }
 
+char playerMove(char square[])
+{
+  int playerPick;
+
+  cout << "It is the user's turn! Where would you like to play?\n";
+  cin >> playerPick;
+
+  char charPlayerPick = '0' + playerPick;
+  if (charPlayerPick == square[playerPick-1])
+  {
+    square[playerPick-1] = 'X';
+    cout << "Marked square " << playerPick << " as " << square[playerPick-1] << "\n";
+    for (int i = 0; i < 9; i++)
+      cout << square[i] << "\n";
+  }
+  else
+    cout << "Didn't work.\n";
+  return square[playerPick-1];
+}
+
+char compMove(char square[])
+{
+  bool compValid = true;
+  int compPick;
+  do {
+    compPick = (rand() % 9) + 1;
+    char charCompPick = '0' + compPick;
+    if (charCompPick == square[compPick-1])
+    {
+      square[compPick-1] = 'O';
+      cout << "Marked square " << compPick << " as " << square[compPick-1] << "\n";
+      for (int i = 0; i < 9; i++)
+        cout << square[i] << "\n";
+      compValid = true;
+    }
+    else
+    {
+      compValid = false;
+      cout << "WHY WONT YOU WORK";
+    }
+
+  } while(!compValid);
+  return square[compPick-1];
+}
 
 
 
