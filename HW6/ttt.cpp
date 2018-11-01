@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cctype>
 using namespace std;
 
 // Create an empty Tic_Tac_Toe board
@@ -20,6 +21,7 @@ void startMenu();
 void instructions();
 bool coinFlip();
 void board();
+//void checkGameOver();
 
 int main()
 {
@@ -33,7 +35,7 @@ void startMenu()
   int menuSelect;
   do {
 
-  cout << "\n\n";
+  cout << "\n";
   cout << "1. How to play.\n";
   cout << "2. Play!\n";
   cout << "3. Quit.\n\n";
@@ -47,7 +49,8 @@ void startMenu()
   }
   else if (menuSelect == 2)
   {
-    cout << "Let's play!!\n";
+    system("clear");
+    cout << "Let's play!!\n\n";
     board();
   }
   else if (menuSelect == 3)
@@ -76,56 +79,76 @@ bool coinFlip()
   int whoGoesFirst = (rand() % 2);
 
   if (whoGoesFirst == 0)
-  {
-    cout << "The user will go first!\n";
     userFirst = true;
-  }
   else
-  {
-    cout << "The computer will go first!\n";
     userFirst = false;
-  }
 
   return userFirst;
 }
 
 void board()
 {
+  char playAgain;
   char boardSymbol;
-  bool userFirst = coinFlip();
-  if (userFirst)
-    boardSymbol = 'X';
-  else
-    boardSymbol = 'O';
-  cout << "First symbol is " << boardSymbol << "\n";
-  //do {
-  char square[] = {'7', '8', '9', '4', '5', '6', '1', '2', '3'};
+  do {
+    bool userFirst = coinFlip();
+    if (userFirst)
+    {
+      boardSymbol = 'X';
+      cout << "The user goes first, using " << boardSymbol << ", followed by the computer!\n\n";
+    }
+    else
+    {
+      boardSymbol = 'O';
+      cout << "The computer goes first, using " << boardSymbol << ", followed by the user!\n\n";
+    }
 
-/*
-  cout << "\n\n";
-  cout << "  " << square[0] << "  |  " << square[1] << "  |  " << square[2];
-  cout << "\n-----------------\n";
-  cout << "  " << square[3] << "  |  " << square[4] << "  |  " << square[5];
-  cout << "\n-----------------\n";
-  cout << "  " << square[6] << "  |  " << square[7] << "  |  " << square[8];
-  cout << "\n";
-  */
+    char square[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-  for (int i = 0; i < 9; i=i+3)
-  {
-    cout << "\n";
-    cout << "  " << square[i] << "  |  " << square[i+1] << "  |  " << square[i+2] << "\n";
+    for (int i = 0; i < 9; i=i+3)
+    {
+      cout << "\n";
+      cout << "  " << square[i] << "  |  " << square[i+1] << "  |  " << square[i+2] << "\n";
       if (i < 6)
         cout << "-----------------";
-      //while (int j < 6)
-      //{
-        //cout << "\n-----------------\n";
-        //break;
-      //}
-  }
+    }
 
-  //} while (quitGame !)
+    // enter logic if computer goes first
+
+    int playerPick;
+    //do {
+
+      //bool validPlayerPick = true;
+      cout << "It is the user's turn! Where would you like to play?\n";
+      cin >> playerPick;
+
+      char charPlayerPick = '0' + playerPick;
+      if (charPlayerPick == square[playerPick-1])
+      {
+        square[playerPick-1] = boardSymbol;
+        cout << "Marked square " << playerPick << " as " << square[playerPick-1] << "\n";
+        for (int i = 0; i < 9; i++)
+          cout << square[i] << "\n";
+      }
+      else
+        cout << "Didn't work.\n";
+
+  // play by play
+  // Human vs CPU wins
+    do {
+      cout << "\nWould you like to play again? (y/n)\n";
+      cin >> playAgain;
+      if (toupper(playAgain) != 'Y' && toupper(playAgain) != 'N')
+        cout << "\nOops, that wasn't an option. Try again.\n\n";
+    } while(toupper(playAgain) != 'Y' && toupper(playAgain) != 'N');
+
+  //checkGameOver();
+
+  } while (toupper(playAgain) != 'N');
 }
+
+
+
 
 // Specification C2 - Simple Display
 // Display in a 2D table X, O and empty spaces.
