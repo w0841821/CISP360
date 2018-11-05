@@ -213,9 +213,7 @@ char compMove(char square[])
     else
     {
       compValid = false;
-      cout << "WHY WONT YOU WORK";
     }
-
   } while(!compValid);
   return square[compPick-1];
 }
