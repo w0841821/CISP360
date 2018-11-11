@@ -24,6 +24,7 @@ void printMoves();
 int main()
 {
   srand(time(0));
+  // program greeting
   sayHi();
   gameMenu();
   return 0;
