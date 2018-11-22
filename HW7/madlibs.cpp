@@ -30,61 +30,116 @@
 // Specification A3 - Smallest Word
 // Prompt the client for 2 words. Select the smallest and use that for VERB3.
 
-// Specification A? - <>
-// Replace A3 with one feature of your own choosing. This is optional, you can code A3 if you wish and skip this.
-
 #include <iostream>
+#include <string>
 using namespace std;
 
 void getWords();
+void printMadlib();
 
 int main()
 {
   getWords();
+  printMadlib();
   return 0;
 }
 
 void getWords()
 {
+	string timespan,
+		adjective[2],
+		noun[8],
+		verb[7],
+		occupation,
+		person;
+	int integer;
+	float floatNum;
+	char letter;
+
   cout << "Give me a time-span.\n";
-  cin >> timespan >> endl;
-  cout << "Give me a noun.\n";
-  cin >> noun1 >> endl;
+  cin >> timespan;
+
+	cout << "Give me a noun.\n";
+  cin >> noun[0];
+
+	cout << "Give me a verb.\n";
+  cin >> verb[0];
+
   cout << "Give me a verb.\n";
-  cin >> verb1 >> endl;
-  cout << "Give me a verb.\n";
-  cin >> verb2 >> endl;
+  cin >> verb[1];
+
+  cout << "Give me a noun (plural or singular).\n";
+  cin >> noun[1];
+
   cout << "Give me a noun.\n";
-  cin >> noun2 (plural or singular) >> endl;
+  cin >> noun[2];
+
+	cout << "Give me a verb ending in \"ing\" (eg: running, walking).\n";
+  cin >> verb[2];
+
+	cout << "Give me a two-word occupation.\n";
+  cin.ignore();
+  getline(cin, occupation);
+
   cout << "Give me a noun.\n";
-  cin >> noun3 >> endl;
-  cout << "Give me a verb.\n";
-  cin >> verb3 ending in ing  >> endl;
-  cout << "Give me a two-word occupation.\n";
-  cin >> 2 word occupation >> endl;
+  cin >> noun[3];
+
   cout << "Give me a noun.\n";
-  cin >> noun4 >> endl;
-  cout << "Give me a noun.\n";
-  cin >> noun5 >> endl;
-  cout << "Give me a famous person.\n";
-  cin >> famous person >> endl;
+  cin >> noun[4];
+
+	cout << "Give me a famous person (first and last name).\n";
+  cin.ignore();
+  getline(cin, person);
+
   cout << "Give me an adjective.\n";
-  cin >> adjective1 >> endl;
+  cin >> adjective[0];
+
   cout << "Give me a verb.\n";
-  cin >> verb4 >> endl;
+  cin >> verb[3];
+
   cout << "Give me a noun.\n";
-  cin >> noun6 >> endl;
-  cout << "Give me a noun.\n";
-  cin >> noun7 plural >> endl;
+  cin >> noun[5];
+
+  cout << "Give me a plural noun.\n";
+  cin >> noun[6];
+
   cout << "Give me an adjective.\n";
-  cin >> adjective2 >> endl;
-  cout << "Give me a noun.\n";
-  cin >> noun8 plural >> endl;
-  cout << "Give me a verb.\n";
-  cin >> verb preposition >> endl;
-  cout << "Give me an integer.\n";
-  cin >> integer >> endl;
-  cout << "Give me a verb.\n";
-  cin >> verb5 >> endl;
-  cin >> float letter >> endl;
+  cin >> adjective[1];
+
+  cout << "Give me a plural noun.\n";
+  cin >> noun[7];
+
+  cout << "Give me a verb with preposition (eg: waiting for, going with, smells of, based on).\n";
+  cin.ignore();
+  getline(cin, verb[5]);
+
+	cout << "Give me an integer.\n";
+  cin >> integer;
+
+	cout << "Give me a verb.\n";
+  cin >> verb[6];
+
+	cout << "Give me a floating number (eg: 4.1).\n";
+  cin >> floatNum;
+
+	cout << "Give me a single letter.\n";
+	cin >> letter;
+}
+
+void printMadlib()
+{
+  cout << "  A Day In The Life Of a College Student\n";
+  cout << "  ======================================\n\n";
+  cout << "Every " << timespan << ", I wake up and get off my " << noun[0] << ". I don't\n";
+  cout << "always have time to " << verb[0] << " a shower, but I always make sure\n";
+  cout << "to " << verb[1] << " my hair. Once that‘s done I get some " << noun[1] ",\n";
+  cout << "and then it‘s off to my first " << noun[2] << ". I often\n";
+  cout << "get caught " << verb[2] << " in class. No one likes it\n";
+  cout << "when the " << occupation << " gives a surprise " << noun[3] << ". My second\n";
+  cout << "class is " << noun[4] << " Theory. Dr. " << person << " is incredibly\n";
+  cout << adjective[0] << ", but I never " << verb[3] << " her because of her thick " << noun[5] << ".\n";
+  cout << "Her " << noun[6] << ", however, are really " << adjective[1] << ". After\n";
+  cout << "lunch, I have no more " << noun[7] << " and I‘m free to " << verb[4] << "\n";
+  cout << "my friends. This is right around " << integer << " O’clock.\n";
+  cout << "Before I go to bed I " << verb[5] << " a little bit, in my room, " << floatNum << " " << letter << ".\n";
 }
