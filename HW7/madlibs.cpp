@@ -13,6 +13,8 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 class Madlib
@@ -61,11 +63,8 @@ void Madlib::getWords()
 	cout << "Give me a verb. ";
 	cin >> verb[0];
 
-//	cout << "Give me a verb. ";
 	verb[1] = verb1();
 
-//	cout << "Give me a noun (plural or singular). ";
-//	cin >> noun[1];
 	noun[1] = noun1();
 
 	cout << "Give me a noun. ";
@@ -107,21 +106,16 @@ void Madlib::getWords()
 	// Specification A2 - C Style String
 	cin.ignore();
 	cin.getline(noun7, 13);
-	//cin >> setw(13) >> noun7;
 
 	cout << "Give me a verb with preposition (eg: wait for, hang with). ";
-//	cin.ignore();
 	getline(cin, verb[4]);
 
 	cout << "Give me an integer. (eg: 1, 20, 100) ";
 	cin >> integer;
 
 	cout << "Give me a verb. ";
-//	cin >> verb[5];
 	verb[5] = verb5();
 
-//	cout << "Give me a floating number (eg: 4.1). ";
-//	cin >> floatingNum;
 	floatingNum = roomNum();
 
 	cout << "Give me a single letter. ";
