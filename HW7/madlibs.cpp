@@ -1,14 +1,13 @@
-// Specification B1 - Phrase Validation
-// FAMOUS PERSON and 2 WORD OCCUPATION require a word phrase. This assignment assumes this is just two words separated with a space. The input validation for this is to just check to see if the string has a space in it.
-
+// madlibs.cpp
+// Erroll Abrahamian, CISP 360
+// 11-25-2018
 
 #include <iostream>
 #include <string>
 #include <cctype>
-#include <cstdlib>
-#include <ctime>
 using namespace std;
 
+// class delcaration
 class Madlib
 {
 	private:
@@ -25,6 +24,7 @@ class Madlib
 		char noun7[13],
 			letter;
 	public:
+		void sayHi();
 		void gameMenu();
 		void printRules();
 		void getWords();
@@ -37,17 +37,31 @@ string noun0();
 string noun1();
 string verb1();
 string verb2();
+string getOccupation();
+string getPerson();
 string verb5();
 float roomNum();
 
 int main()
 {
+// randomize the random number for later
 	srand(time(0));
+
+// class objects
 	Madlib story;
 
+// program greeting
+	story.sayHi();
+
+// the main menu
 	story.gameMenu();
 
 	return 0;
+}
+
+void Madlib::sayHi()
+{
+	cout << "\nWelcome to Madlibs!\n\n";
 }
 
 void Madlib::gameMenu()
@@ -55,7 +69,7 @@ void Madlib::gameMenu()
 	int menu;
 	bool again;
 
-	// Specification B4 – Simple Menu
+// Specification B4 – Simple Menu
 	do {
 		cout << "\n1. Need to know how to play?\n";
 		cout << "2. Play Mad Libs!\n";
@@ -64,14 +78,14 @@ void Madlib::gameMenu()
 		cin >> menu;
 
 		if (menu == 1)
-			story.printRules();
+			printRules();
 		else if (menu == 2)
 		{
 			do {
-				story.getWords();
-				story.printStory();
+				getWords();
+				printStory();
 // Specification A1 - Main Game Loop
-				again = story.playAgain();
+				again = playAgain();
 			} while(again);
 		}
 		else if (menu == 3)
@@ -79,36 +93,39 @@ void Madlib::gameMenu()
 	} while(menu != 3);
 }
 
-void Madlib:printRules()
+void Madlib::printRules()
 {
 	cout << "\nYou will be asked for different categories of words.\n";
 	cout << "These categories will include nouns, verbs, adjectives, a timespan (such as\n";
-	cout << "a day or year), an occupation, a number, a letter, even a person!.\n";
+	cout << "a day or year), an occupation, a number, a letter, even a person!\n";
 }
 
 void Madlib::getWords()
 {
-	cout << "Give me a timespan. ";
+	cout << "\nGive me a timespan. ";
 	cin >> timespan;
 
 	cout << "Give me a noun, no longer than 15 letters. ";
+// run the noun0 function to check the length of the noun
 	noun[0] = noun0();
 
 	cout << "Give me a verb. ";
 	cin >> verb[0];
 
+// run the verb1 function to generate the random word
 	verb[1] = verb1();
 
+// run the noun1 function to let user pick from a menu of words
 	noun[1] = noun1();
 
 	cout << "Give me a noun. ";
 	cin >> noun[2];
 
+// run the verb2 function to check for the smaller verb
 	verb[2] = verb2();
 
-	cout << "Give me a two-word occupation. ";
-	cin.ignore();
-	getline(cin, occupation);
+// run the getOccupation function to check for a space in the occupation
+	occupation = getOccupation();
 
 	cout << "Give me a noun. ";
 	cin >> noun[3];
@@ -116,9 +133,8 @@ void Madlib::getWords()
 	cout << "Give me a noun. ";
 	cin >> noun[4];
 
-	cout << "Give me a famous person (first and last name). ";
-	cin.ignore();
-	getline(cin, person);
+// run the getPerson function to check for a space in the name
+	person = getPerson();
 
 	cout << "Give me an adjective. ";
 	cin >> adjective[0];
@@ -137,6 +153,7 @@ void Madlib::getWords()
 
 	cout << "Give me a noun (plural). ";
 	cin.ignore();
+
 // Specification A2 - C Style String
 	cin.getline(noun7, 13);
 
@@ -147,8 +164,11 @@ void Madlib::getWords()
 	cin >> integer;
 
 	cout << "Give me a verb. ";
+
+// run the verb5 function to validate the size of the verb
 	verb[5] = verb5();
 
+// run the roomNum function to generate a random room number
 	floatingNum = roomNum();
 
 	cout << "Give me a single letter. ";
@@ -165,13 +185,15 @@ bool Madlib::playAgain()
 
 	do {
 		cin >> menu;
-		if (toupper(playAgain) == 'Y')
+		if (toupper(menu) == 'Y')
 			again = true;
-		else if (toupper(playAgain) == 'N')
+		else if (toupper(menu) == 'N')
 			again = false;
 		else
 			cout << "\nTry again! (y/n)\n";
-	} while((toupper(menu) != 'N') && (toupper(playAgain) != 'Y'));
+
+	// loop while the wrong letter is entered
+	} while((toupper(menu) != 'N') && (toupper(menu) != 'Y'));
 
 	return again;
 }
@@ -216,6 +238,8 @@ string noun1()
 			break;
 			default: cout << "\nNot a valid entry. Try again.\n";
 		}
+
+	// loop as long as the wrong letter is entered
 	} while((toupper(menu) != 'B') && (toupper(menu) != 'F') && (toupper(menu) != 'C'));
 
 	return noun;
@@ -255,12 +279,67 @@ string verb2()
 
 	if (size1 < size2)
 		verb2 = verb2choice1;
-	else if (size1 > size2)
-		verb2 = verb2choice2;
 	else
-		verb2 = verb2choice1;
+
+		// just use the second choice, even if they're the same size
+		verb2 = verb2choice2;
 
 	return verb2;
+}
+
+// Specification B1 - Phrase Validation
+string getPerson()
+{
+	string person;
+	int count = 0,
+		i;
+
+	cout << "Give me a famous person (first and last name). ";
+	cin.ignore();
+	do {
+		getline(cin, person);
+
+		for (i = 0; i < static_cast<int>(person.length()); i++)
+			if (person[i] == ' ')
+				count++;
+
+		if (count != 1)
+		{
+			cout << "\nThat doesn't seem right. Shouldn't there only be one space?\n";
+			cout << "What's their first and last name? ";
+		}
+
+	// loop while there is not exactly one space in the name
+	} while(count != 1);
+
+	return person;
+}
+
+string getOccupation()
+{
+	string occupation;
+	int count = 0,
+		i;
+
+	cout << "Give me a two-word occupation. ";
+	cin.ignore();
+	do {
+		getline(cin, occupation);
+
+		for (i = 0; i < static_cast<int>(occupation.length()); i++)
+			if (occupation[i] == ' ')
+				count++;
+
+		if (count != 1)
+		{
+			cout << "\nThat doesn't seem like a two-word occupation, does it?\n";
+			cout << "What do they do? ";
+		}
+
+	// loop while there is not exactly one space in the occupation
+	} while(count != 1);
+
+	return occupation;
 }
 
 // Specification B3 - Range Validation
@@ -284,14 +363,19 @@ string verb5()
 // Specification C2 - Random Float
 float roomNum()
 {
+	// generate between 0 and 140, then add 10 to make the range 10 to 150
 	float i = (rand() % 141) + 10;
+
+	// divide by 10 to get our desired decimal
 	i = i / 10;
+
 	return i;
 }
 
+// tell a story!
 void Madlib::printStory()
 {
-	cout << "  A Day In The Life Of a College Student\n";
+	cout << "\n  A Day In The Life Of a College Student\n";
     cout << "  ======================================\n\n";
     cout << "Every " << timespan << ", I wake up and get off my " << noun[0] << ". I don't\n";
     cout << "always have time to " << verb[0] << " a shower, but I always make sure\n";
