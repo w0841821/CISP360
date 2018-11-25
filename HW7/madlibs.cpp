@@ -1,14 +1,6 @@
 // Specification B1 - Phrase Validation
 // FAMOUS PERSON and 2 WORD OCCUPATION require a word phrase. This assignment assumes this is just two words separated with a space. The input validation for this is to just check to see if the string has a space in it.
 
-// Specification B4 – Simple Menu
-// Create a simple menu 1 - Explain Mad Libs, 2 - Start Mad Libs, 3 -Quit. Only allow valid choices.
-
-// Specification A1 - Main Game Loop
-// Use a DO - WHILE to run the game until the client decides to quit. Just prompt at the end of the game if the human want’s to play again (y/n).
-
-// Specification A3 - Smallest Word
-// Prompt the client for 2 words. Select the smallest and use that for VERB3.
 
 #include <iostream>
 #include <string>
@@ -24,6 +16,8 @@ class Madlib
 			adjective[2],
 			noun[7],
 			verb[6],
+			verb2choice1,
+			verb2choice2,
 			occupation,
 			person;
 		int integer;
@@ -31,13 +25,18 @@ class Madlib
 		char noun7[13],
 			letter;
 	public:
+		void gameMenu();
+		void printRules();
 		void getWords();
 		void printStory();
+		bool playAgain();
 };
 
+// function prototypes
 string noun0();
 string noun1();
 string verb1();
+string verb2();
 string verb5();
 float roomNum();
 
@@ -46,10 +45,45 @@ int main()
 	srand(time(0));
 	Madlib story;
 
-	story.getWords();
-	story.printStory();
+	story.gameMenu();
 
 	return 0;
+}
+
+void Madlib::gameMenu()
+{
+	int menu;
+	bool again;
+
+	// Specification B4 – Simple Menu
+	do {
+		cout << "\n1. Need to know how to play?\n";
+		cout << "2. Play Mad Libs!\n";
+		cout << "3. Quit.\n";
+
+		cin >> menu;
+
+		if (menu == 1)
+			story.printRules();
+		else if (menu == 2)
+		{
+			do {
+				story.getWords();
+				story.printStory();
+// Specification A1 - Main Game Loop
+				again = story.playAgain();
+			} while(again);
+		}
+		else if (menu == 3)
+			cout << "\nBye!\n\n";
+	} while(menu != 3);
+}
+
+void Madlib:printRules()
+{
+	cout << "\nYou will be asked for different categories of words.\n";
+	cout << "These categories will include nouns, verbs, adjectives, a timespan (such as\n";
+	cout << "a day or year), an occupation, a number, a letter, even a person!.\n";
 }
 
 void Madlib::getWords()
@@ -70,8 +104,7 @@ void Madlib::getWords()
 	cout << "Give me a noun. ";
 	cin >> noun[2];
 
-	cout << "Give me a verb ending in \"ing\" (eg: running, walking). ";
-	cin >> verb[2];
+	verb[2] = verb2();
 
 	cout << "Give me a two-word occupation. ";
 	cin.ignore();
@@ -103,8 +136,8 @@ void Madlib::getWords()
 	cin >> adjective[1];
 
 	cout << "Give me a noun (plural). ";
-	// Specification A2 - C Style String
 	cin.ignore();
+// Specification A2 - C Style String
 	cin.getline(noun7, 13);
 
 	cout << "Give me a verb with preposition (eg: wait for, hang with). ";
@@ -121,6 +154,26 @@ void Madlib::getWords()
 	cout << "Give me a single letter. ";
 	cin >> letter;
 	letter = toupper(letter);
+}
+
+bool Madlib::playAgain()
+{
+	char menu;
+	bool again;
+
+	cout << "Would you like to play again? (y/n)\n";
+
+	do {
+		cin >> menu;
+		if (toupper(playAgain) == 'Y')
+			again = true;
+		else if (toupper(playAgain) == 'N')
+			again = false;
+		else
+			cout << "\nTry again! (y/n)\n";
+	} while((toupper(menu) != 'N') && (toupper(playAgain) != 'Y'));
+
+	return again;
 }
 
 //Specification B2 - Maximum Word Size Validation
@@ -180,6 +233,34 @@ string verb1()
 	else
 		str = "remove";
 	return str;
+}
+
+// Specification A3 - Smallest Word
+string verb2()
+{
+	string verb2,
+		verb2choice1,
+		verb2choice2;
+	int size1,
+		size2;
+
+	cout << "Give me a verb ending in \"ing\" (eg: running, walking). ";
+	cin >> verb2choice1;
+
+	cout << "Give me another verb ending in \"ing\" ";
+	cin >> verb2choice2;
+
+	size1 = verb2choice1.length();
+	size2 = verb2choice2.length();
+
+	if (size1 < size2)
+		verb2 = verb2choice1;
+	else if (size1 > size2)
+		verb2 = verb2choice2;
+	else
+		verb2 = verb2choice1;
+
+	return verb2;
 }
 
 // Specification B3 - Range Validation
