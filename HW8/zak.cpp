@@ -7,9 +7,6 @@
 // Specification B3 - Signify Dropped
 // Include the dropped tests when printing out all the test scores for the student, but signify if the test was dropped by displaying "DROPPED" next to the score.
 
-// Specification B4 – Sorted Output
-// Sort the output scores from highest to lowest score. Put this specification comment right above your sorting code.
-
 // Specification A1 - Main Student Loop
 // Up to this point, you can code this so you need to rerun it for each student. Now, expand the program and allow Professor Zak to enter the number of students in her class. She will then enter all the data during one program run. Generate the outputs as earlier for each student.
 
@@ -19,6 +16,8 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <algorithm>
+#include <functional>
 using namespace std;
 
 class Zak
@@ -39,7 +38,7 @@ public:
   void gradeArray();
   void getNames();
   void getGrades();
-  void printGrades();
+  void printStudentGrades();
   void deleteArray();
 };
 
@@ -52,7 +51,7 @@ int main() {
   grades.gradeArray();
   grades.getNames();
   grades.getGrades();
-  grades.printGrades();
+  grades.printStudentGrades();
   grades.deleteArray();
 
   return 0;
@@ -82,15 +81,15 @@ void Zak::getQuizzes()
 }
 
 // initialize a string array for names
-// initialize an int array for grades
-
-// rows = based on student
-// cols = quizzes
+// initialize an int array for grades (student by quiz)
 
 // Specification B1 - Pseudo Dynamic Array
 void Zak::gradeArray()
 {
+// 1D array
   names = new string[students];
+
+// 2D array
   grades = new int*[students];
 
   for (i = 0; i < students; i++)
@@ -101,15 +100,14 @@ void Zak::getNames()
 {
   int spaces;
   string studentName;
-
-//  cout << "\n";
+  cout << "\n";
   cin.ignore();
   for (i = 0; i < students; i++)
   {
     spaces = 0;
 
 // Specification C2 - Student Name
-    cout << "\nEnter student " << i + 1 << "'s first and last name: ";
+    cout << "Enter student " << i + 1 << "'s first and last name: ";
     do {
       getline(cin, studentName);
 
@@ -154,23 +152,66 @@ void Zak::getGrades()
 
 // Display the number of tests, the score for each test and the average grade for the class for each student.
 // Specification C1 - Student Summary
-void Zak::printGrades()
+void Zak::printStudentGrades()
 {
   float totalpoints;
   float average;
 
+  // temp array to sort quiz numbers
+  int* tempQuiz = new int[quizzes];
+
+  // temp array to sort quiz scores
+  int* tempSort = new int[quizzes];
+  int temp;
+  int flag = 1;
+
+  // iterate thru every student
   for (i = 0; i < students; i++)
   {
     totalpoints = 0;
+
+    // print student name and number of quizzes
     cout << "\n" << names[i] << " (" << quizzes << " quizzes):\n";
     for (j = 0; j < quizzes; j++)
     {
+      tempQuiz[j] = j;
+      tempSort[j] = grades[i][j];
+    }
+
+    // not the prettiest, but sorting two separate arrays works
+    // one array is quiz number, one is quiz score
+    // Specification B4 – Sorted Output
+    for (int x = 0; x < quizzes && flag; x++)
+    {
+      for (int y = 0; y < quizzes; y++)
+      {
+        if (tempSort[y+1] > tempSort[y])
+        {
+          temp = tempSort[y];
+          tempSort[y] = tempSort[y+1];
+          tempSort[y+1] = temp;
+
+          temp = tempQuiz[y];
+          tempQuiz[y] = tempQuiz[y+1];
+          tempQuiz[y+1] = temp;
+        }
+      }
+    }
+
+
+    for (int x = 0; x < quizzes; x++)
+    {
+      cout << "Quiz #" << tempQuiz[x] + 1 << ": " << tempSort[x] << "\t";
+      totalpoints += tempSort[x];
+    }
+/*
       cout << "Quiz " << j + 1 << ": " << grades[i][j] << "\t";
       totalpoints += grades[i][j];
-    }
+    } */
     average = totalpoints / quizzes;
     cout << "Average: " << average << "\n";
   }
+  delete[] tempSort;
 }
 
 void Zak::deleteArray()
