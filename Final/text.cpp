@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <thread>
 using namespace std;
 
 /*
@@ -10,13 +11,17 @@ parking = 2, 3
 bridge = 4
 street = 5, 6, 7
 home = 8
+            POOL
+            LBY
+      PLA   PLB
+BRD   ST0   ST1   ST2   HOME
 */
 enum Rooms_Enum {POOL, LOBBY, PARKINGLOT0, PARKINGLOT1, BRIDGE, STREET0, STREET1, STREET2, HOME};
 
 // north = 0, south = 1, east = 2, west = 3
 enum Dirs_Enum {N, S, E, W};
 
-// use sentinel if we don't have an exit from a room
+// use sentinel if we don't have an exit from a room, kept separate from Rooms_Enum
 const int NONE = -1;
 
 // number of rooms
@@ -47,8 +52,13 @@ public:
   int curRoom;
 
   // booleans for quitting, or winning
-  bool hasCar = false,
+  bool hasKeys = false,
+    hasCar = false,
+
+    // gamer over for losing to a monster
     over = false,
+
+    // winner for, well, yeah
     winner = false;
 
   // input for movement
@@ -59,7 +69,7 @@ public:
   void setDirs(Directions *dir);
   void sayHi();
   void gameMenu();
-  void play();
+  void play(Rooms *rm);
   bool makeMove(char move, Rooms *rm, Directions *dir);
   void printMeal();
 //  bool checkWin(Rooms *rm);
@@ -69,17 +79,21 @@ int main()
 {
   RoomVars game;
 
+  // random seed for monster usage
   srand(time(0));
 
   // establish the layout of the rooms and exit directions
   game.setRooms(room);
   game.setDirs(dirs);
   game.sayHi();
+  this_thread::sleep_for(2s);
   game.gameMenu();
+  this_thread::sleep_for(2s);
 
   // start in the swimming pool, based on Rooms_Enum
   game.curRoom = POOL;
-  game.play();
+
+  game.play(room);
 }
 
 void RoomVars::setRooms(Rooms *rm)
@@ -87,30 +101,33 @@ void RoomVars::setRooms(Rooms *rm)
   rm[POOL].title = "Swimming Pool";
   rm[POOL].desc = "You are floating in a swimming pool.\nThere is an exit to the south, but something doesn't feel right.\nIs there something in the water with you?\n";
   rm[POOL].look = "You are floating in the swimming pool. Still.\nThere is an exit to the south.\n";
-  rm[POOL].visited = false;
+  rm[POOL].visited = true;
   rm[POOL].exit[N] = NONE;
   rm[POOL].exit[S] = LOBBY;
   rm[POOL].exit[E] = NONE;
   rm[POOL].exit[W] = NONE;
 
   rm[LOBBY].title = "Lobby";
-  rm[LOBBY].desc = "You are in a hotel lobby. Did you stay here last night? It's all such a blur.\nYou see your car keys on the ground. Weird. You pick them up.\nNow, where did you park?\n";
+  rm[LOBBY].desc = "You are in a hotel lobby. Did you stay here last night? It's all such a blur.\nYou see your car keys on the ground. Weird.\nNow, where did you park?\nOh, there's a parking lot to the south.\n";
+  rm[LOBBY].look = "You are in the hotel lobby.\nThe swimming pool is to the north.\nThe parking lot is to the south.\n";
   rm[LOBBY].visited = false;
   rm[LOBBY].exit[N] = POOL;
   rm[LOBBY].exit[S] = PARKINGLOT1;
   rm[LOBBY].exit[E] = NONE;
   rm[LOBBY].exit[W] = NONE;
 
-  rm[PARKINGLOT0].title = "Parking Lot - West";
-  rm[PARKINGLOT0].desc = "You're in the western half of the large parking lot.\nThat car over there looks familiar...\n";
+  rm[PARKINGLOT0].title = "Parking Lot A";
+  rm[PARKINGLOT0].desc = "You're in Parking Lot A.\nThat car over there looks familiar...\n";
+  rm[PARKINGLOT0].look = "You're in Parking Lot A.\n";
   rm[PARKINGLOT0].visited = false;
   rm[PARKINGLOT0].exit[N] = NONE;
   rm[PARKINGLOT0].exit[S] = NONE;
   rm[PARKINGLOT0].exit[E] = PARKINGLOT1;
   rm[PARKINGLOT0].exit[W] = NONE;
 
-  rm[PARKINGLOT1].title = "Parking Lot - East";
+  rm[PARKINGLOT1].title = "Parking Lot B";
   rm[PARKINGLOT1].desc = "You're in Parking Lot B.\nTo the north is the lobby.\nTo the south is the street.\nTo the east is the parking lot fence.\nTo the west is Parking Lot A.\n";
+  rm[PARKINGLOT1].look = "You're in Parking Lot B.\nTo the north is the lobby.\nTo the south is the street.\nTo the east is the parking lot fence.\nTo the west is Parking Lot A.\n";
   rm[PARKINGLOT1].visited = false;
   rm[PARKINGLOT1].exit[N] = LOBBY;
   rm[PARKINGLOT1].exit[S] = STREET1;
@@ -118,7 +135,8 @@ void RoomVars::setRooms(Rooms *rm)
   rm[PARKINGLOT1].exit[W] = PARKINGLOT0;
 
   rm[BRIDGE].title = "Collapsed Bridge";
-  rm[BRIDGE].desc = "";
+  rm[BRIDGE].desc = "You're at the edge of a collapsed bridge.\nThe only way out is the street to the east, but something's in the rubble...\n";
+  rm[BRIDGE].look = "You're at the edge of the collapsed bridge.\n";
   rm[BRIDGE].visited = false;
   rm[BRIDGE].exit[N] = NONE;
   rm[BRIDGE].exit[S] = NONE;
@@ -127,6 +145,7 @@ void RoomVars::setRooms(Rooms *rm)
 
   rm[STREET0].title = "Street";
   rm[STREET0].desc = "";
+  rm[STREET0].look = "";
   rm[STREET0].visited = false;
   rm[STREET0].exit[N] = NONE;
   rm[STREET0].exit[S] = NONE;
@@ -135,6 +154,7 @@ void RoomVars::setRooms(Rooms *rm)
 
   rm[STREET1].title = "Street";
   rm[STREET1].desc = "";
+  rm[STREET1].look = "";
   rm[STREET1].visited = false;
   rm[STREET1].exit[N] = PARKINGLOT1;
   rm[STREET1].exit[S] = NONE;
@@ -143,6 +163,7 @@ void RoomVars::setRooms(Rooms *rm)
 
   rm[STREET2].title = "Street";
   rm[STREET2].desc = "";
+  rm[STREET2].look = "";
   rm[STREET2].visited = false;
   rm[STREET2].exit[N] = NONE;
   rm[STREET2].exit[S] = NONE;
@@ -151,6 +172,7 @@ void RoomVars::setRooms(Rooms *rm)
 
   rm[HOME].title = "Home";
   rm[HOME].desc = "";
+  rm[HOME].look = "";
   rm[HOME].visited = false;
   rm[HOME].exit[N] = NONE;
   rm[HOME].exit[S] = NONE;
@@ -198,18 +220,24 @@ void RoomVars::gameMenu()
   cout << "You can look around the room using the L key.\n";
   cout << "You can bring up this menu again using the H key.\n";
   cout << "You can quit at any time using the Q key.\n\n";
+  cout << "HINT: Sometimes there might be an item to (U)se...\n\n";
+  cout << "Now, let's get home!!!\n\n";
 }
 
-void RoomVars::play()
+void RoomVars::play(Rooms *rm)
 {
+  cout << rm[curRoom].title << "\n";
+  cout << rm[curRoom].desc << "\n";
   do {
-    cout << "What would you like to do? ";
+    cout << "\nWhat would you like to do? ";
     cin >> move;
     move = (toupper(move));
     if (move != 'Q')
     {
       winner = makeMove(move, room, dirs);
     }
+    else
+      break;
   } while(!winner);
 }
 
@@ -242,7 +270,11 @@ bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
         // move the player if the room has an exit
         if (rm[curRoom].exit[i] != NONE)
         {
+          // change to the new room
           curRoom = rm[curRoom].exit[i];
+
+          // print the description of the new room
+
           if (curRoom == HOME)
           {
             if ((hasCar == false))
@@ -259,6 +291,9 @@ bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
           }
           else
             cout << "You are now in " << rm[curRoom].title << ".\n";
+
+          // mark the new room as being visited, changes text output on look
+          rm[curRoom].visited = true;
         }
         else
         {
