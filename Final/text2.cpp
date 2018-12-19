@@ -6,10 +6,10 @@ using namespace std;
 /*
 pool = 0
 lobby = 1
-parking = 2
-bridge = 3
-street = 4, 5, 6
-home = 7
+parking = 2, 3
+bridge = 4
+street = 5, 6, 7
+home = 8
 */
 enum Rooms_Enum {POOL, LOBBY, PARKINGLOT0, PARKINGLOT1, BRIDGE, STREET0, STREET1, STREET2, HOME};
 
