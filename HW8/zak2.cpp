@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-//void getZak(string**);
+// void getZak(int, int);
 
 class Zak
 {
@@ -15,11 +15,12 @@ class Zak
 
 	public:
 //		void start();
-		string grades[students][quizzes];
+//		string grades[students][quizzes];
 		void sayHi();
 		void numStudents();
 		void numQuizzes();
-		void printGrades();
+//		void printGrades();
+		void getZak();
 };
 
 int main()
@@ -28,7 +29,8 @@ int main()
 	grades.sayHi();
 	grades.numStudents();
 	grades.numQuizzes();
-	grades.printGrades();
+//	grades.printGrades();
+	grades.getZak();
 	//string grades[students][quizzes];
 	return 0;
 }
@@ -49,7 +51,7 @@ void Zak::numQuizzes()
 	cout << "\nQuizzes? ";
 	cin >> quizzes;
 }
-
+/*
 void Zak::printGrades()
 {
 	int i,
@@ -65,14 +67,21 @@ void Zak::printGrades()
 		}
 	}
 }
-/*
-void getZak(string grades[][quizzes])
+*/
+void Zak::getZak()
 {
-	int i,
-		j = 0;
+	int i;
+//		j = 0;
+	string** grades = nullptr;
+
+	grades = new string*[students];
+	for (i = 0; i < students; students++)
+	{
+		grades[i] = new string[quizzes];
+	}
 
 	cout << "We have " << students << " students, and " << quizzes << " quizzes.\n";
-
+/*
 	for (i = 0; i < students; i++)
 	{
 		cout << "What is student #" << i + 1 << "'s name? ";
@@ -85,5 +94,8 @@ void getZak(string grades[][quizzes])
 			cin >> grades[i][j];
 		}
 	}
-}
 */
+	for (i = 0; i < students; i++)
+		delete [] grades[i];
+	delete [] grades;
+}

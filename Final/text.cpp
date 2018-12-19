@@ -86,7 +86,7 @@ void RoomVars::setRooms(Rooms *rm)
 {
   rm[POOL].title = "Swimming Pool";
   rm[POOL].desc = "You are floating in a swimming pool.\nThere is an exit to the south, but something doesn't feel right.\nIs there something in the water with you?\n";
-  rm[POOL].look = "You are floating in the swimming pool. Still.\nThere is an exit to the south\n";
+  rm[POOL].look = "You are floating in the swimming pool. Still.\nThere is an exit to the south.\n";
   rm[POOL].visited = false;
   rm[POOL].exit[N] = NONE;
   rm[POOL].exit[S] = LOBBY;
@@ -218,7 +218,7 @@ bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
   // look around if L is input
   if (move == 'L')
   {
-    cout << rm[curRoom].desc << "\n";
+    cout << rm[curRoom].look << "\n";
     return false;
   }
 
