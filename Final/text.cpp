@@ -1,3 +1,7 @@
+// text.cpp
+// Erroll Abrahamian
+// 12-20-2018
+
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -57,11 +61,14 @@ struct Monsters
 {
   string name,
     ability,
-    art;
+    art,
+    win,
+    check;
+  char winKey;
   bool fought;
 } monst[MONS];
 
-class RoomVars
+class GetHome
 {
 public:
   // current room, based on room number and Rooms_Enum
@@ -71,14 +78,16 @@ public:
   bool hasKeys = false,
     hasCar = false,
 
-    // gamer over for losing to a monster
-    over = false,
-
     // winner for, well, yeah
     winner = false;
 
   // input for movement
-  char move;
+  char move,
+
+    // input to quit
+    forSure;
+
+  string playerName;
 
   // function prototypes
   void setRooms(Rooms *rm);
@@ -86,14 +95,16 @@ public:
   void setMons(Monsters *mon);
   void sayHi();
   void gameMenu();
-  void play(Rooms *rm);
+  void play(Rooms *rm, Monsters *mon);
+  void fightMonster(Monsters *mon);
+  void playRoom(Rooms *rm, Directions *dir);
   bool makeMove(char move, Rooms *rm, Directions *dir);
   void printMeal();
 };
 
 int main()
 {
-  RoomVars game;
+  GetHome game;
 
   // random seed for monster usage
   srand(time(0));
@@ -101,18 +112,19 @@ int main()
   // establish the layout of the rooms and exit directions
   game.setRooms(room);
   game.setDirs(dirs);
+  game.setMons(monst);
   game.sayHi();
-  this_thread::sleep_for(2s);
+  this_thread::sleep_for(1500ms);
   game.gameMenu();
-  this_thread::sleep_for(2s);
+  this_thread::sleep_for(1500ms);
 
   // start in the swimming pool, based on Rooms_Enum
   game.curRoom = POOL;
 
-  game.play(room);
+  game.play(room, monst);
 }
 
-void RoomVars::setRooms(Rooms *rm)
+void GetHome::setRooms(Rooms *rm)
 {
   rm[POOL].title = "Swimming Pool";
   rm[POOL].desc = "You are floating in a swimming pool.\nThere is an exit to the south, but something doesn't feel right.\nIs there something in the water with you?\n";
@@ -217,7 +229,7 @@ void RoomVars::setRooms(Rooms *rm)
 */
 }
 
-void RoomVars::setDirs(Directions *dir)
+void GetHome::setDirs(Directions *dir)
 {
   // compass is the char variable of the direction
   // dirNum refers to the integer set with Dirs_Enum
@@ -231,30 +243,53 @@ void RoomVars::setDirs(Directions *dir)
   dir[W].dirNum = W;
 }
 
-void RoomVars::setMons(Monsters *mon)
+void GetHome::setMons(Monsters *mon)
 {
-  mon[DINOSAUR].name = "Dinosaur":
-  mon[DINOSAUR].ability = "This thing is huge!\nRemember that one movie though?\nSome of the big ones don't see very well...\n";
-  mon[DINOSAUR].art = "DINO ART";
+  mon[DINOSAUR].name = "DINOSAUR";
+  mon[DINOSAUR].ability = "This thing is huge!\nRemember that one movie though?\nSome of the big ones don't see very well.\nWhat if you (c)rouched out of sight...\n\n";
+  // mon[DINOSAUR].art = "DINO ART";
+  mon[DINOSAUR].art = "       __\n      /oo\\\n     |    |\n ^^  (vvvv)   ^^\n \\\\  /\\__/\\  //\n  \\\\/      \\//\n   /        \\\n  |          |    ^\n /          \\___/ |\n(            )     |\n \\----------/     /\n   //    \\\\_____/\n  W       W\n";
+  mon[DINOSAUR].win = "You managed to crouch long enough for the DINOSAUR to move along.\nIt's someone else's problem now.\n";
+  mon[DINOSAUR].check = "Are you sure you don't want to (c)rouch?\n";
+  mon[DINOSAUR].winKey = 'C';
   mon[DINOSAUR].fought = false;
 
-  mon[ZOMBIE].name = "Zombie";
-  mon[ZOMBIE].ability = "Ew. How fast can you run?\n";
-  mon[ZOMBIE].art = "ZOMBIE ART";
+  mon[ZOMBIE].name = "ZOMBIE";
+  mon[ZOMBIE].ability = "Ew. How fast can you (r)un?\n\n";
+  mon[ZOMBIE].art = "                  .....\n                 C C  /\n                /<   /\n ___ __________/_#__=o\n/(- /(\\_\\________   \\\n\\ ) \\ )_      \\o     \\\n/|\\ /|\\       |'     |\n              |     _|\n              /o   __\\\n             / '     |\n            / /      |\n           /_/\\______|\n          (   _(    <\n           \\    \\    \\\n            \\    \\    |\n             \\____\\____\\\n             ____\\_\\__\\_\\\n           /`   /`     o\\\n           |___ |_______|\n";
+  mon[ZOMBIE].win = "Wow, you can run pretty fast.\n";
+  mon[ZOMBIE].check = "Are you sure you don't want to (r)un away?\n";
+  mon[ZOMBIE].winKey = 'R';
   mon[ZOMBIE].fought = false;
 
-  mon[HAPPYFACE].name = "Happy Face Emoji";
-  mon[HAPPYFACE].ability = "All he wants is to bring happiness!\n";
-  mon[HAPPYFACE].art = "HAPPY ART";
+  mon[HAPPYFACE].name = "HAPPY FACE";
+  mon[HAPPYFACE].ability = "This guy isn't even scary. All he wants is to bring (j)oy!\n\n";
+  mon[HAPPYFACE].art = "    _.-'''''-._\n  .'  _     _  '.\n /   (_)   (_)   \\\n|  ,           ,  |\n|  \\`.       .`/  |\n \\  '.`'''''`.'  /\n  '.  `'---'`  .'\n    '-._____.-'\n";
+  mon[HAPPYFACE].win = "Boy, you're sure pretty joyous!\n";
+  mon[HAPPYFACE].check = "Are you sure you don't want to look (j)oyful? It is the holidays, after all.\n";
+  mon[HAPPYFACE].winKey = 'J';
   mon[HAPPYFACE].fought = false;
 
-  mon[XENOMORPH].name = "Xenomorph";
-  mon[XENOMORPH].ability = "Reminds me of a movie where they used a flamethrower. Happen to have one?";
-  mon[XENOMORPH].art = "XENO ART";
+  mon[XENOMORPH].name = "XENOMORPH";
+  mon[XENOMORPH].ability = "Reminds me of a movie where they used a (f)lamethrower. Happen to have one?\n\n";
+  mon[XENOMORPH].art = "         __.,,------.._\n      ,''   _      _   '`.\n     /.__, ._  -=- _'`    Y\n    (.____.-.`      ''`   j\n     VvvvvvV`.Y,.    _.,-'       ,     ,     ,\n        Y    ||,   ''\\         ,/    ,/    ./\n        |   ,'  ,     `-..,'_,'/___,'/   ,'/   ,\n   ..  ,;,,',-''\\,'  ,  .     '     ' ''' '--,/    .. ..\n ,'. `.`---'     `, /  , Y -=-    ,'   ,   ,. .`-..||_|| ..\nff\\\\`. `._        /f ,'j j , ,' ,   , f ,  \\=\\ Y   || ||`||_..\nl` \\` `.`.'`-..,-' j  /./ /, , / , / /l \\   \\=\\l   || `' || ||...\n `  `   `-._ `-.,-/ ,' /`'/-/-/-/-'''''`.`.  `'.\\--`'--..`'_`' || ,\n            '`-_,',  ,'  f    ,   /      `._   \n``._     ,  `-.`'//         ,\n          ,-''' _.,-'    l_,-'_,,'          '`-._ . '`. /|     `.'\\ ,       |\n        ,',.,-''          \\=) ,`-.         ,    `-'._`.V |       \\ // .. . /j\n        |f\\\\               `._ )-.'`.     /|         `.| |        `.`-||-\\\\/\n        l` \\`                 '`._   '`--'\nj          j' j          `-`---'\n         `  `                     '`,-  ,'/       ,-''  /\n                                 ,'',__,-'       /,, ,-'\n                                 Vvv'            VVv'\n";
+  mon[XENOMORPH].win = "That's a pretty crispy XENOMORPH. Think they're tasty?\n";
+  mon[XENOMORPH].check = "Are you sure you don't want to use the (f)lamethrower you just happen to have?\n";
+  mon[XENOMORPH].winKey = 'F';
   mon[XENOMORPH].fought = false;
+
+/* copypaste template
+  mon[].name = "";
+  mon[].ability = "";
+  mon[].art = "";
+  mon[].win = "";
+  mon[].check = "";
+  mon[].winKey = '';
+  mon[].fought = false;
+*/
 }
 
-void RoomVars::sayHi()
+void GetHome::sayHi()
 {
   system("clear");
 
@@ -262,7 +297,7 @@ void RoomVars::sayHi()
   cout << "Welcome to GET HOME, a text adventure!\nWill you be able to find your way home?\n";
 }
 
-void RoomVars::gameMenu()
+void GetHome::gameMenu()
 {
   cout << "\nYou will have the option to move north, south, east, or west.\n";
   cout << "You can do this using the N, S, E, and W keys.\n";
@@ -270,16 +305,32 @@ void RoomVars::gameMenu()
   cout << "You can bring up this menu again using the H key.\n";
   cout << "You can quit at any time using the Q key.\n\n";
   cout << "HINT: Sometimes there might be an action to (P)erform...\n\n";
-  cout << "Now, let's get home!!!\n\n\n";
+  cout << "Now, let's get home!!!\n\n";
 }
 
-void RoomVars::play(Rooms *rm)
+void GetHome::play(Rooms *rm, Monsters *mon)
 {
-  char forSure;
+  cout << "Who are you, by the way? ";
+  cin >> playerName;
+  cout << "\n";
 
   cout << rm[curRoom].title << "\n";
   cout << rm[curRoom].desc << "\n";
 
+  do {
+
+//    cout << "What would you like to do? ";
+  //  cin >> move;
+    //move = (toupper(move));
+    if (rm[curRoom].monster == true)
+      fightMonster(monst);
+    else if (rm[curRoom].exit[static_cast<Dirs_Enum>(move)] == HOME)
+      cout << "GOING HOME\n";
+    else
+      playRoom(room, dirs);
+  } while(!hasKeys && !hasCar && !winner);
+
+/*
   do {
     cout << "What would you like to do? ";
     cin >> move;
@@ -290,16 +341,67 @@ void RoomVars::play(Rooms *rm)
     }
     else
     {
-      cout << "Are you sure you'd like to quit? (\"y\" to quit) ";
+      cout << "Are you sure you'd like to quit? (Y to quit) ";
       cin >> forSure;
       forSure = (toupper(forSure));
       if (forSure == 'Y')
         break;
     }
   } while(!winner);
+  */
 }
 
-bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
+void GetHome::fightMonster(Monsters *mon)
+{
+  bool validMonst;
+  do {
+    int pickMonst = (rand() % 4);
+    if (mon[pickMonst].fought == false)
+    {
+      cout << "\n\n";
+      cout << mon[pickMonst].name << string(10, ' ') << "VERSUS" << string(10, ' ') << playerName << "\n";
+      cout << mon[pickMonst].art;
+      cout << mon[pickMonst].ability;
+      cout << "What will you do??? ";
+      cin >> move;
+      move = (toupper(move));
+      if (move == mon[pickMonst].winKey)
+        cout << mon[pickMonst].win;
+      else
+        cout << mon[pickMonst].check;
+
+      mon[pickMonst].fought = true;
+      validMonst = true;
+
+    }
+    else
+      validMonst = false;
+  } while(!validMonst);
+}
+
+void GetHome::playRoom(Rooms *rm, Directions *dir)
+{
+  if (move == 'L')
+    cout << rm[curRoom].look << "\n";
+  else if (move == 'H')
+    gameMenu();
+  else if (move == 'N' || move == 'S' || move == 'E' || move == 'W')
+    for (int i = 0; i < EXITS; i++)
+    {
+      if (move == dir[i].compass)
+      {
+        if (rm[curRoom].exit[i] != NONE)
+        {
+          curRoom = rm[curRoom].exit[i];
+          rm[curRoom].visited = true;
+          cout << "\n\nYou are now in " << rm[curRoom].title << ".\n\n";
+          cout << rm[curRoom].desc << "\n";
+        }
+      }
+    }
+}
+
+bool GetHome::makeMove(char move, Rooms *rm, Directions *dir)
 {
   // look around if L is input
   if (move == 'L')
@@ -356,7 +458,7 @@ bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
             rm[curRoom].visited = true;
 
             // print the name of the new room
-            cout << "\nYou are now in " << rm[curRoom].title << ".\n";
+            cout << "\n\nYou are now in " << rm[curRoom].title << ".\n\n";
 
             // print the description of the new room
             cout << rm[curRoom].desc << "\n";
@@ -386,7 +488,7 @@ bool RoomVars::makeMove(char move, Rooms *rm, Directions *dir)
   }
 }
 
-void RoomVars::printMeal()
+void GetHome::printMeal()
 {
   cout << string(58, ' ') << "//\n";
   cout << string(57, ' ') << "//\n";
